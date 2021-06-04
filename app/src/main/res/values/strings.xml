@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">sosApp</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">register</string>
+</resources>
