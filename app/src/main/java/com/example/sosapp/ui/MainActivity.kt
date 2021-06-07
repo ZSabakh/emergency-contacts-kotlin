@@ -1,5 +1,6 @@
 package com.example.sosapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,11 +21,29 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
+        verifyAuthorization()
         fetchContacts()
     }
 
+    private fun verifyAuthorization(){
+        apiClient.getApiService().fetchPosts(token = "${sessionManager.fetchAuthToken()}")
+            .enqueue(object : Callback<ContactsResponse> {
+                override fun onFailure(call: Call<ContactsResponse>, t: Throwable) {
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                }
 
-    private fun fetchContacts() {
+                override fun onResponse(call: Call<ContactsResponse>, response: Response<ContactsResponse>) {
+                    if (response.code() != 200) {
+                        Toast.makeText(this@MainActivity, "Authorization issue!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            })
+    }
+
+    private fun fetchContacts(){
         apiClient.getApiService().fetchPosts(token = "${sessionManager.fetchAuthToken()}")
             .enqueue(object : Callback<ContactsResponse> {
                 override fun onFailure(call: Call<ContactsResponse>, t: Throwable) {
