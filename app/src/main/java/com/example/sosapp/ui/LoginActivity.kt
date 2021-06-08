@@ -43,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
                                 if (loginResponse.accessToken.length > 1) {
                                     Toast.makeText(this@LoginActivity, "Success!", Toast.LENGTH_SHORT).show()
                                     sessionManager.saveAuthToken(loginResponse.accessToken)
+                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    startActivity(intent)
                                 } else {
                                     Toast.makeText(this@LoginActivity, "Credentials incorrect!", Toast.LENGTH_SHORT).show()
                                 }
@@ -50,8 +52,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                     })
 
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
+
         }
     }
 
