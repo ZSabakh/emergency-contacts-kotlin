@@ -5,9 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sosapp.models.Contact
 
 
-class RecyclerViewAdapter(private val contacts: MutableList<String>)
+class RecyclerViewAdapter(private val contacts: MutableList<Contact>)
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
 
@@ -19,8 +20,8 @@ class RecyclerViewAdapter(private val contacts: MutableList<String>)
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.contact.text = contacts[position]
-        holder.number.text = contacts[position]
+        holder.contact.text = contacts[position].contact_name
+        holder.number.text = contacts[position].phone
     }
 
 

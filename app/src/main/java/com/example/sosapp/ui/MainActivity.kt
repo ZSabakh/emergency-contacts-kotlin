@@ -10,12 +10,13 @@ import com.example.sosapp.R
 import com.example.sosapp.RecyclerViewAdapter
 import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
+import com.example.sosapp.models.Contact
 import com.example.sosapp.models.ContactsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
     private lateinit var recyclerView: RecyclerView
@@ -29,29 +30,22 @@ class MainActivity : AppCompatActivity(){
         fetchContacts()
 
         val contacts = mutableListOf(
-            "Davit", "Zaza", "Misha",
-            "Bidzina", "Shalva", "Natela"
+            Contact("Misha", "555"),
+            Contact("Bidzina", "41")
         )
 
-        GridLayoutManager(
-            this,
-            2,
-            RecyclerView.VERTICAL,
-            false
-        ).apply {
-            recyclerView.layoutManager = this
-        }
 
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = RecyclerViewAdapter(contacts)
 
     }
 
 
-    private fun viewInitializations(){
+    private fun viewInitializations() {
         recyclerView = findViewById(R.id.recyclerView)
     }
 
-    private fun fetchContacts(){
+    private fun fetchContacts() {
         apiClient.getApiService().fetchPosts(token = "${sessionManager.fetchAuthToken()}")
             .enqueue(object : Callback<ContactsResponse> {
                 override fun onFailure(call: Call<ContactsResponse>, t: Throwable) {
@@ -59,14 +53,22 @@ class MainActivity : AppCompatActivity(){
                     startActivity(intent)
                 }
 
-                override fun onResponse(call: Call<ContactsResponse>, response: Response<ContactsResponse>) {
+                override fun onResponse(
+                    call: Call<ContactsResponse>,
+                    response: Response<ContactsResponse>
+                ) {
                     if (response.code() != 200) {
-                        Toast.makeText(this@MainActivity, "Authorization issue!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Authorization issue!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         val intent = Intent(this@MainActivity, LoginActivity::class.java)
                         startActivity(intent)
                     }
                     val loginResponse = response.body()
-                    Toast.makeText(this@MainActivity, "Contacts fetched!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Contacts fetched!", Toast.LENGTH_SHORT)
+                        .show()
                     if (loginResponse != null) {
                         println(loginResponse.contacts[0].contact_name)
                     }
