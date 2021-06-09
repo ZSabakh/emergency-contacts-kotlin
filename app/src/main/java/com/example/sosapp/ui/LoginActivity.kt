@@ -31,26 +31,40 @@ class LoginActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
 
         btLogin.setOnClickListener {
-            apiClient.getApiService().login(SignInRequest(username = etUsername.text.toString(), password = etPassword.text.toString()))
-                    .enqueue(object : Callback<UserResponse> {
-                        override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                            Toast.makeText(this@LoginActivity, "Login failure!", Toast.LENGTH_SHORT).show()
-                        }
+            apiClient.getApiService().login(
+                SignInRequest(
+                    username = etUsername.text.toString(),
+                    password = etPassword.text.toString()
+                )
+            )
+                .enqueue(object : Callback<UserResponse> {
+                    override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                        Toast.makeText(this@LoginActivity, "Login failure!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
-                        override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                            val loginResponse = response.body()
-                            if (loginResponse != null) {
-                                if (loginResponse.accessToken.length > 1) {
-                                    Toast.makeText(this@LoginActivity, "Success!", Toast.LENGTH_SHORT).show()
-                                    sessionManager.saveAuthToken(loginResponse.accessToken)
-                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                    startActivity(intent)
-                                } else {
-                                    Toast.makeText(this@LoginActivity, "Credentials incorrect!", Toast.LENGTH_SHORT).show()
-                                }
+                    override fun onResponse(
+                        call: Call<UserResponse>,
+                        response: Response<UserResponse>
+                    ) {
+                        val loginResponse = response.body()
+                        if (loginResponse != null) {
+                            if (loginResponse.accessToken.length > 1) {
+                                Toast.makeText(this@LoginActivity, "Success!", Toast.LENGTH_SHORT)
+                                    .show()
+                                sessionManager.saveAuthToken(loginResponse.accessToken)
+                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    "Credentials incorrect!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
-                    })
+                    }
+                })
 
 
         }

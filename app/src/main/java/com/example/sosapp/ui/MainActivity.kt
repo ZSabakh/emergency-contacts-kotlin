@@ -2,6 +2,7 @@ package com.example.sosapp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var contactsTest: MutableList<Contact>
+    private lateinit var btAddContact: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +31,20 @@ class MainActivity : AppCompatActivity() {
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
         fetchContacts()
-        
+
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+
+        btAddContact.setOnClickListener {
+            val intent = Intent(this@MainActivity, AddContactActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
 
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.recyclerView)
+        btAddContact = findViewById(R.id.bt_add_contact)
     }
 
     private fun fetchContacts() {

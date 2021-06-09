@@ -20,6 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.LoginActivity">
+        </activity>
+        <activity android:name=".ui.AddContactActivity">
 
         </activity>
     </application>
