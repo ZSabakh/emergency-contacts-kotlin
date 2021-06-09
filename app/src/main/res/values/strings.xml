@@ -4,4 +4,5 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="register">register</string>
+    <string name="add_contact">Add Contact</string>
 </resources>

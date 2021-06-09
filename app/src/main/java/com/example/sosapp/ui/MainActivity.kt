@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
     private lateinit var recyclerView: RecyclerView
+    private lateinit var contactsTest: MutableList<Contact>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +29,8 @@ class MainActivity : AppCompatActivity() {
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
         fetchContacts()
-
-        val contacts = mutableListOf(
-            Contact("Misha", "555"),
-            Contact("Bidzina", "41")
-        )
-
-
+        
         recyclerView.layoutManager = GridLayoutManager(this, 2)
-        recyclerView.adapter = RecyclerViewAdapter(contacts)
 
     }
 
@@ -70,7 +64,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "Contacts fetched!", Toast.LENGTH_SHORT)
                         .show()
                     if (loginResponse != null) {
-                        println(loginResponse.contacts[0].contact_name)
+                        contactsTest = loginResponse.contacts
+                        recyclerView.adapter = RecyclerViewAdapter(contactsTest)
                     }
                 }
             })
