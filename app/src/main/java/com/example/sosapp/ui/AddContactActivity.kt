@@ -46,6 +46,7 @@ class AddContactActivity : AppCompatActivity() {
                         response: Response<Contact>
                     ) {
                         if (response.code() != 200) {
+                            Toast.makeText(this@AddContactActivity, "Error", Toast.LENGTH_SHORT).show()
                             startActivity(intent)
                         }
                         Toast.makeText(

@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sosapp.models.Contact
+import com.example.sosapp.ui.model.ContactUIModel
 
 
-class RecyclerViewAdapter(private val contacts: MutableList<Contact>)
+class RecyclerViewAdapter(private val contactUIModels: List<ContactUIModel>)
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
 
@@ -20,13 +20,16 @@ class RecyclerViewAdapter(private val contacts: MutableList<Contact>)
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.contact.text = contacts[position].contact_name
-        holder.number.text = contacts[position].phone
+        holder.contact.text = contactUIModels[position].contactName
+        holder.number.text = contactUIModels[position].phone
+        holder.number.setOnClickListener{
+            contactUIModels[position].onClick()
+        }
     }
 
 
     override fun getItemCount(): Int {
-        return contacts.size
+        return contactUIModels.size
     }
 
 

@@ -13,6 +13,7 @@ import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.Contact
 import com.example.sosapp.models.ContactsResponse
+import com.example.sosapp.ui.model.ContactUIModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,7 +74,16 @@ class MainActivity : AppCompatActivity() {
                         .show()
                     if (loginResponse != null) {
                         contactsTest = loginResponse.contacts
-                        recyclerView.adapter = RecyclerViewAdapter(contactsTest)
+                        recyclerView.adapter = RecyclerViewAdapter(contactsTest.map {
+                            ContactUIModel(
+                                it.contact_name,
+                                it.phone,
+                                onClick = {
+                                    Toast.makeText(this@MainActivity, it.phone, Toast.LENGTH_SHORT)
+                                        .show()
+                                },
+                            )
+                        })
                     }
                 }
             })
