@@ -6,5 +6,7 @@ data class MessageRequest(
     @SerializedName("phone")
     val phone: ArrayList<String>,
     @SerializedName("text")
-    val text: String
+    val text: String,
+    @SerializedName("location")
+    val location: MutableList<String>
 )
