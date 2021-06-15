@@ -5,4 +5,5 @@ object Constants {
     const val LOGIN_URL = "auth/signin"
     const val CONTACTS_URL = "user/get-contacts"
     const val ADD_CONTACT_URL = "user/add-contact"
+    const val SEND_TEXT_URL = "user/send-text"
 }

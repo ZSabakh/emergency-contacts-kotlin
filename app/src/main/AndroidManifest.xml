@@ -22,7 +22,8 @@
         <activity android:name=".ui.LoginActivity">
         </activity>
         <activity android:name=".ui.AddContactActivity">
-
+        </activity>
+        <activity android:name=".ui.SendTextActivity">
         </activity>
     </application>
 

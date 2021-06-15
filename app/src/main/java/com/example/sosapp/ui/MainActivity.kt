@@ -14,10 +14,11 @@ import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.Contact
 import com.example.sosapp.models.ContactsResponse
-import com.example.sosapp.ui.model.ContactUIModel
+import com.example.sosapp.ui.models.ContactUIModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
@@ -42,6 +43,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddContactActivity::class.java)
             startActivity(intent)
         }
+        btSendText.setOnClickListener{
+            val intent = Intent(this@MainActivity, SendTextActivity::class.java)
+            intent.putExtra("selected_contacts", selectedContacts as Serializable)
+            startActivity(intent)
+        }
 
     }
 
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.recyclerView)
         btAddContact = findViewById(R.id.bt_add_contact)
-        btSendText = findViewById(R.id.bt_send_text)
+        btSendText = findViewById(R.id.bt_create_text)
     }
 
     private fun fetchContacts() {
@@ -83,9 +89,16 @@ class MainActivity : AppCompatActivity() {
                                 it.contact_name,
                                 it.phone,
                                 onClick = {
-                                    selectedContacts.add(it.phone)
                                     btSendText.visibility = View.VISIBLE
+                                    if(!selectedContacts.contains(it.phone)){
+                                        selectedContacts.add(it.phone)
+                                    }else{
+                                        selectedContacts.remove(it.phone)
+                                    }
                                     btSendText.text = "Send to ${selectedContacts.size}"
+                                    if(selectedContacts.size == 0){
+                                        btSendText.visibility = View.INVISIBLE
+                                    }
                                 },
                             )
                         })
