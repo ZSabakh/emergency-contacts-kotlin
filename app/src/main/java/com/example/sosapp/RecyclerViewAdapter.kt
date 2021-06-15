@@ -22,7 +22,7 @@ class RecyclerViewAdapter(private val contactUIModels: List<ContactUIModel>)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.contact.text = contactUIModels[position].contactName
         holder.number.text = contactUIModels[position].phone
-        holder.number.setOnClickListener{
+        holder.itemView.setOnClickListener{
             contactUIModels[position].onClick()
         }
     }

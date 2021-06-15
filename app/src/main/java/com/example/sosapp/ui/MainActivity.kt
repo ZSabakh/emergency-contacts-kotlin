@@ -2,6 +2,7 @@ package com.example.sosapp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var contactsTest: MutableList<Contact>
     private lateinit var btAddContact: Button
+    private lateinit var btSendText: Button
+    val selectedContacts: MutableList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.recyclerView)
         btAddContact = findViewById(R.id.bt_add_contact)
+        btSendText = findViewById(R.id.bt_send_text)
     }
 
     private fun fetchContacts() {
@@ -79,8 +83,9 @@ class MainActivity : AppCompatActivity() {
                                 it.contact_name,
                                 it.phone,
                                 onClick = {
-                                    Toast.makeText(this@MainActivity, it.phone, Toast.LENGTH_SHORT)
-                                        .show()
+                                    selectedContacts.add(it.phone)
+                                    btSendText.visibility = View.VISIBLE
+                                    btSendText.text = "Send to ${selectedContacts.size}"
                                 },
                             )
                         })
