@@ -7,4 +7,6 @@ data class Contact(
     val contact_name: String,
     @SerializedName("phone")
     val phone: String,
+    @SerializedName("_id")
+    val _id: String
 )

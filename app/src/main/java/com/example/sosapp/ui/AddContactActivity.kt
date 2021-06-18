@@ -34,7 +34,7 @@ class AddContactActivity : AppCompatActivity() {
             val intent = Intent(this@AddContactActivity, MainActivity::class.java)
             apiClient.getApiService().postContact(
                 token = "${sessionManager.fetchAuthToken()}",
-                Contact(etNewContactName.text.toString(), etNewContactPhone.text.toString())
+                Contact(etNewContactName.text.toString(), etNewContactPhone.text.toString(), "")
             )
                 .enqueue(object : Callback<Contact> {
                     override fun onFailure(call: Call<Contact>, t: Throwable) {

@@ -12,8 +12,7 @@ import com.example.sosapp.R
 import com.example.sosapp.RecyclerViewAdapter
 import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
-import com.example.sosapp.models.Contact
-import com.example.sosapp.models.ContactsResponse
+import com.example.sosapp.models.*
 import com.example.sosapp.ui.models.ContactUIModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +26,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var contactsTest: MutableList<Contact>
     private lateinit var btAddContact: Button
     private lateinit var btSendText: Button
-    val selectedContacts: MutableList<String> = ArrayList()
+    private lateinit var btRemoveContacts: Button
+    val selectedContactNumbers: MutableList<String> = ArrayList()
+    val selectedContactIDs: MutableList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +40,46 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
+        btRemoveContacts.setOnClickListener{
+            apiClient.getApiService().removeContacts(
+                token = "${sessionManager.fetchAuthToken()}",
+                RemoveContactRequest(selectedContactIDs as ArrayList<String>)
+            )
+                .enqueue(object : Callback<Contact> {
+                    override fun onFailure(call: Call<Contact>, t: Throwable) {
+                        startActivity(intent)
+                    }
+
+                    override fun onResponse(
+                        call: Call<Contact>,
+                        response: Response<Contact>
+                    ) {
+                        if (response.code() != 200) {
+                            Toast.makeText(this@MainActivity, "Error", Toast.LENGTH_SHORT)
+                                .show()
+                            startActivity(intent)
+                        }
+                        else{
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Contact removed!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivity(intent)
+                        }
+                    }
+                })
+            fetchContacts()
+            selectedContactIDs.clear()
+            selectedContactNumbers.clear()
+        }
         btAddContact.setOnClickListener {
             val intent = Intent(this@MainActivity, AddContactActivity::class.java)
             startActivity(intent)
         }
         btSendText.setOnClickListener{
             val intent = Intent(this@MainActivity, SendTextActivity::class.java)
-            intent.putExtra("selected_contacts", selectedContacts as Serializable)
+            intent.putExtra("selected_contacts", selectedContactNumbers as Serializable)
             startActivity(intent)
         }
 
@@ -55,7 +89,8 @@ class MainActivity : AppCompatActivity() {
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.recyclerView)
         btAddContact = findViewById(R.id.bt_add_contact)
-        btSendText = findViewById(R.id.bt_create_text)
+        btSendText = findViewById(R.id.bt_select_contacts)
+        btRemoveContacts = findViewById(R.id.bt_remove_contacts)
     }
 
     private fun fetchContacts() {
@@ -88,15 +123,20 @@ class MainActivity : AppCompatActivity() {
                             ContactUIModel(
                                 it.contact_name,
                                 it.phone,
+                                it._id,
                                 onClick = {
+                                    btRemoveContacts.visibility = View.VISIBLE
                                     btSendText.visibility = View.VISIBLE
-                                    if(!selectedContacts.contains(it.phone)){
-                                        selectedContacts.add(it.phone)
+                                    if(!selectedContactNumbers.contains(it.phone)){
+                                        selectedContactNumbers.add(it.phone)
+                                        selectedContactIDs.add(it._id)
                                     }else{
-                                        selectedContacts.remove(it.phone)
+                                        selectedContactNumbers.remove(it.phone)
+                                        selectedContactIDs.remove(it._id)
                                     }
-                                    btSendText.text = "Send to ${selectedContacts.size}"
-                                    if(selectedContacts.size == 0){
+                                    btSendText.text = "Send to ${selectedContactNumbers.size}"
+                                    if(selectedContactNumbers.size == 0){
+                                        btRemoveContacts.visibility = View.INVISIBLE
                                         btSendText.visibility = View.INVISIBLE
                                     }
                                 },

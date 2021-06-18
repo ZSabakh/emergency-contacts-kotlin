@@ -1,15 +1,11 @@
 package com.example.sosapp.ui
 
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.sosapp.LocationHelper
 import com.example.sosapp.R
 import com.example.sosapp.api.ApiClient
@@ -78,7 +74,7 @@ class SendTextActivity : AppCompatActivity() {
 
 
     private fun viewInitializations() {
-        btSendText = findViewById(R.id.bt_create_text)
+        btSendText = findViewById(R.id.bt_select_contacts)
     }
 
 
