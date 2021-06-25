@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etUsername: EditText
     private lateinit var etPassword: EditText
     private lateinit var btLogin: Button
+    private lateinit var btRegister: Button
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
 
@@ -31,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
 
         btLogin.setOnClickListener {
+
             apiClient.getApiService().login(
                 SignInRequest(
                     username = etUsername.text.toString(),
@@ -68,6 +70,10 @@ class LoginActivity : AppCompatActivity() {
 
 
         }
+        btRegister.setOnClickListener{
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 
@@ -75,5 +81,6 @@ class LoginActivity : AppCompatActivity() {
         etUsername = findViewById(R.id.et_login_username)
         etPassword = findViewById(R.id.et_login_password)
         btLogin = findViewById(R.id.bt_login)
+        btRegister = findViewById(R.id.bt_register)
     }
 }
