@@ -29,6 +29,8 @@
         </activity>
         <activity android:name=".ui.SendTextActivity">
         </activity>
+        <activity android:name=".ui.RegisterActivity">
+        </activity>
     </application>
 
 </manifest>
