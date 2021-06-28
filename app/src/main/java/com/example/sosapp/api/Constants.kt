@@ -8,4 +8,5 @@ object Constants {
     const val ADD_CONTACT_URL = "user/add-contact"
     const val REMOVE_CONTACTS_URL = "user/remove-contacts"
     const val SEND_TEXT_URL = "user/send-text"
+    const val TEXTS_URL = "user/get-texts"
 }

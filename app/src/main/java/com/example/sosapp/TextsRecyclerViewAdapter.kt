@@ -5,37 +5,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sosapp.ui.models.ContactUIModel
+import com.example.sosapp.ui.models.TextUIModel
 
 
-class RecyclerViewAdapter(private val contactUIModels: List<ContactUIModel>)
-    : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class TextsRecyclerViewAdapter(private val textUIModels: List<TextUIModel>)
+    : RecyclerView.Adapter<TextsRecyclerViewAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.contact_element,parent,false)
+            .inflate(R.layout.text_element,parent,false)
         return ViewHolder(view)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.contact.text = contactUIModels[position].contactName
-        holder.number.text = contactUIModels[position].phone
+//        holder.contact.text = textUIModels[position].contactName
+//        holder.number.text = textUIModels[position].phone
+        holder.text.text = textUIModels[position].text
         holder.itemView.setOnClickListener{
-            contactUIModels[position].onClick()
+            textUIModels[position].onClick()
         }
     }
 
 
     override fun getItemCount(): Int {
-        return contactUIModels.size
+        return textUIModels.size
     }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val contact: TextView = itemView.findViewById(R.id.tvContact)
-        val number: TextView = itemView.findViewById(R.id.tvNumber)
+        val text: TextView = itemView.findViewById(R.id.tv_text)
+//        val contact: TextView = itemView.findViewById(R.id.tvContact)
+//        val number: TextView = itemView.findViewById(R.id.tvNumber)
     }
 
 

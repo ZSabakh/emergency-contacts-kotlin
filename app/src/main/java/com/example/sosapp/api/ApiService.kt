@@ -21,6 +21,9 @@ interface ApiService {
     @GET(Constants.CONTACTS_URL)
     fun fetchPosts(@Header("x-access-token") token: String): Call<ContactsResponse>
 
+    @GET(Constants.TEXTS_URL)
+    fun fetchTexts(@Header("x-access-token") token: String): Call <TextsResponse>
+
     @POST(Constants.SEND_TEXT_URL)
     fun sendText(@Header("x-access-token") token: String, @Body request:MessageRequest): Call <MessageResponse>
 }

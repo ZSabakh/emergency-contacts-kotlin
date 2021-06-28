@@ -7,11 +7,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sosapp.R
-import com.example.sosapp.RecyclerViewAdapter
 import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.Contact
-import com.example.sosapp.models.ContactsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.R
-import com.example.sosapp.RecyclerViewAdapter
+import com.example.sosapp.ContactsRecyclerViewAdapter
 import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.*
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun viewInitializations() {
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.rv_contacts)
         btAddContact = findViewById(R.id.bt_add_contact)
         btSendText = findViewById(R.id.bt_select_contacts)
         btRemoveContacts = findViewById(R.id.bt_remove_contacts)
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                         .show()
                     if (loginResponse != null) {
                         contactsTest = loginResponse.contacts
-                        recyclerView.adapter = RecyclerViewAdapter(contactsTest.map {
+                        recyclerView.adapter = ContactsRecyclerViewAdapter(contactsTest.map {
                             ContactUIModel(
                                 it.contact_name,
                                 it.phone,
