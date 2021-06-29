@@ -1,5 +1,4 @@
 package com.example.sosapp.ui
-
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
@@ -51,10 +50,11 @@ class SendTextActivity : AppCompatActivity() {
 
         btSendCustomText.setOnClickListener {
             val intent = Intent(this@SendTextActivity, CustomTextActivity::class.java)
+            intent.putExtra("selected_contacts", selectedContacts)
+            intent.putExtra("coordinates", coordinates as Serializable)
             startActivity(intent)
         }
     }
-
 
     private fun fetchTexts() {
         apiClient.getApiService().fetchTexts(token = "${sessionManager.fetchAuthToken()}")
@@ -98,7 +98,7 @@ class SendTextActivity : AppCompatActivity() {
             })
     }
 
-    private fun sendText(text: String){
+    fun sendText(text: String){
         val intent = Intent(this@SendTextActivity, MainActivity::class.java)
 
         apiClient.getApiService().sendText(
@@ -128,6 +128,7 @@ class SendTextActivity : AppCompatActivity() {
                 }
             })
     }
+
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.rv_texts)
         btSendCustomText = findViewById(R.id.bt_send_custom_text)

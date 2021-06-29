@@ -64,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/send_text_as_well"
                 android:textSize="17sp"
+                android:checked="true"
                 app:layout_constraintBottom_toTopOf="@+id/bt_complete_custom_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
