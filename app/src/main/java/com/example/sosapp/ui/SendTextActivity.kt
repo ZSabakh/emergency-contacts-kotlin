@@ -3,8 +3,10 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.LocationHelper
@@ -26,6 +28,11 @@ class SendTextActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var fetchedTexts: MutableList<FetchedTextResponse>
     private lateinit var selectedContacts: Serializable
+    private lateinit var btSelectRemoveTexts: Button
+    private lateinit var cvRemoveContacts: CardView
+    private lateinit var btRemoveTexts: Button
+    private lateinit var tvSelectedTextsCounter: TextView
+
     val coordinates: MutableList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,5 +139,9 @@ class SendTextActivity : AppCompatActivity() {
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.rv_texts)
         btSendCustomText = findViewById(R.id.bt_send_custom_text)
+        btSelectRemoveTexts = findViewById(R.id.bt_select_remove_texts)
+        tvSelectedTextsCounter = findViewById(R.id.tv_selected_texts_counter)
+        cvRemoveContacts = findViewById(R.id.cv_remove_contacts)
+        btRemoveTexts = findViewById(R.id.bt_remove_texts)
     }
 }
