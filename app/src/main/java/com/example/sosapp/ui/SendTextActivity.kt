@@ -35,7 +35,7 @@ class SendTextActivity : AppCompatActivity() {
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
         fetchTexts()
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = GridLayoutManager(this, 1)
 
 
         LocationHelper().startListeningUserLocation(this , object : LocationHelper.MyLocationListener {

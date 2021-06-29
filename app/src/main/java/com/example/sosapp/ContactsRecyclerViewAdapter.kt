@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
@@ -34,10 +35,11 @@ class ContactsRecyclerViewAdapter(private val contactUIModels: List<ContactUIMod
         holder.itemView.setOnClickListener {
             isSelected = !isSelected
             contactUIModels[position].onClick()
+
             if (isSelected) {
-                holder.cvContactElement.setCardBackgroundColor(Color.parseColor("#4A653B"))
+                holder.cvContactElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_700))
             } else {
-                holder.cvContactElement.setCardBackgroundColor(Color.parseColor("#78A65F"))
+                holder.cvContactElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_500))
             }
         }
     }

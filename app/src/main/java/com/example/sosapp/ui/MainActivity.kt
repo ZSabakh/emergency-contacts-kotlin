@@ -14,6 +14,7 @@ import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.*
 import com.example.sosapp.ui.models.ContactUIModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var contactsTest: MutableList<Contact>
-    private lateinit var btAddContact: Button
+    private lateinit var btAddContact: FloatingActionButton
     private lateinit var btSendText: Button
     private lateinit var btRemoveContacts: Button
     val selectedContactNumbers: MutableList<String> = ArrayList()
