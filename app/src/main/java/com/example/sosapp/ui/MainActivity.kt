@@ -1,13 +1,11 @@
 package com.example.sosapp.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.R
@@ -91,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.rv_contacts)
         btAddContact = findViewById(R.id.bt_add_contact)
-        btSendText = findViewById(R.id.bt_select_contacts)
+        btSendText = findViewById(R.id.bt_send_custom_text)
         btRemoveContacts = findViewById(R.id.bt_remove_contacts)
     }
 

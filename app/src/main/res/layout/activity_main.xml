@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/bt_select_contacts"
+        android:id="@+id/bt_send_custom_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="124dp"
@@ -51,6 +51,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bt_add_contact"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/bt_select_contacts" />
+        app:layout_constraintStart_toEndOf="@+id/bt_send_custom_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,4 +9,8 @@
     <string name="name">Name</string>
     <string name="send_text">Send text</string>
     <string name="remove">remove</string>
+    <string name="send_custom_text">Send custom text</string>
+    <string name="text">Text</string>
+    <string name="complete">Complete</string>
+    <string name="send_text_as_well">Send text as well</string>
 </resources>

@@ -6,6 +6,7 @@ object Constants {
     const val REGISTER_URL = "auth/signup"
     const val CONTACTS_URL = "user/get-contacts"
     const val ADD_CONTACT_URL = "user/add-contact"
+    const val ADD_TEXT_URL = "user/add-text"
     const val REMOVE_CONTACTS_URL = "user/remove-contacts"
     const val SEND_TEXT_URL = "user/send-text"
     const val TEXTS_URL = "user/get-texts"

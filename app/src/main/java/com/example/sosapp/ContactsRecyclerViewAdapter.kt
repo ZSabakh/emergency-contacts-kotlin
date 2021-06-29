@@ -27,7 +27,6 @@ class ContactsRecyclerViewAdapter(private val contactUIModels: List<ContactUIMod
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var isSelected = false;
         holder.contact.text = contactUIModels[position].contactName
