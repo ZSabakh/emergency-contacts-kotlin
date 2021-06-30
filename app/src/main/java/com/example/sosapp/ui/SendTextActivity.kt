@@ -1,7 +1,9 @@
 package com.example.sosapp.ui
+
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +18,7 @@ import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.*
 import com.example.sosapp.ui.models.TextUIModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,10 +31,12 @@ class SendTextActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var fetchedTexts: MutableList<FetchedTextResponse>
     private lateinit var selectedContacts: Serializable
-    private lateinit var btSelectRemoveTexts: Button
+    private lateinit var btSelectRemoveTexts: FloatingActionButton
     private lateinit var cvRemoveContacts: CardView
     private lateinit var btRemoveTexts: Button
     private lateinit var tvSelectedTextsCounter: TextView
+    val selectedTextIDs: MutableList<String> = ArrayList()
+    var isRemovingTexts: Boolean = false
 
     val coordinates: MutableList<String> = ArrayList()
 
@@ -45,15 +50,29 @@ class SendTextActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 1)
 
 
-        LocationHelper().startListeningUserLocation(this , object : LocationHelper.MyLocationListener {
-            override fun onLocationChanged(location: Location) {
-                coordinates.add(location.latitude.toString())
-                coordinates.add(location.longitude.toString())
-            }
-        })
+        LocationHelper().startListeningUserLocation(
+            this,
+            object : LocationHelper.MyLocationListener {
+                override fun onLocationChanged(location: Location) {
+                    coordinates.add(location.latitude.toString())
+                    coordinates.add(location.longitude.toString())
+                }
+            })
 
 
         selectedContacts = intent.getSerializableExtra("selected_contacts")!!
+
+        btSelectRemoveTexts.setOnClickListener {
+            if(!isRemovingTexts){
+                isRemovingTexts = true
+                cvRemoveContacts.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+            if(isRemovingTexts && selectedTextIDs.size == 0){
+                isRemovingTexts = false
+                cvRemoveContacts.visibility = View.INVISIBLE
+            }
+        }
 
         btSendCustomText.setOnClickListener {
             val intent = Intent(this@SendTextActivity, CustomTextActivity::class.java)
@@ -96,7 +115,20 @@ class SendTextActivity : AppCompatActivity() {
                                 it.user_id,
                                 it.text,
                                 onClick = {
-                                    sendText(it.text)
+                                    if (!isRemovingTexts) {
+                                        sendText(it.text)
+                                    }else if(it.user_id != "ADMIN"){
+                                        cvRemoveContacts.visibility = View.VISIBLE
+                                        if(!selectedTextIDs.contains(it._id)){
+                                            selectedTextIDs.add(it._id)
+                                        }else{
+                                            selectedTextIDs.remove(it._id)
+                                        }
+                                        tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
+                                        if(selectedTextIDs.size == 0){
+//                                            tvSelectedTextsCounter.text = R.attr.stri
+                                        }
+                                    }
                                 },
                             )
                         })
@@ -105,7 +137,7 @@ class SendTextActivity : AppCompatActivity() {
             })
     }
 
-    fun sendText(text: String){
+    fun sendText(text: String) {
         val intent = Intent(this@SendTextActivity, MainActivity::class.java)
 
         apiClient.getApiService().sendText(
