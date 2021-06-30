@@ -68,10 +68,18 @@ class SendTextActivity : AppCompatActivity() {
                 cvRemoveContacts.visibility = View.VISIBLE
                 return@setOnClickListener
             }
-            if(isRemovingTexts && selectedTextIDs.size == 0){
+            if(isRemovingTexts){
+                tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
                 isRemovingTexts = false
+                selectedTextIDs.clear()
                 cvRemoveContacts.visibility = View.INVISIBLE
+                fetchTexts()
             }
+        }
+
+        btRemoveTexts.setOnClickListener {
+            removeTexts()
+            fetchTexts()
         }
 
         btSendCustomText.setOnClickListener {
@@ -104,37 +112,41 @@ class SendTextActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     val textsResponse = response.body()
-                    Toast.makeText(this@SendTextActivity, "Texts fetched!", Toast.LENGTH_SHORT)
-                        .show()
                     if (textsResponse != null) {
                         fetchedTexts = textsResponse.texts
-                        recyclerView.adapter = TextsRecyclerViewAdapter(fetchedTexts.map {
-                            println(it)
-                            TextUIModel(
-                                it._id,
-                                it.user_id,
-                                it.text,
-                                onClick = {
-                                    if (!isRemovingTexts) {
-                                        sendText(it.text)
-                                    }else if(it.user_id != "ADMIN"){
-                                        cvRemoveContacts.visibility = View.VISIBLE
-                                        if(!selectedTextIDs.contains(it._id)){
-                                            selectedTextIDs.add(it._id)
-                                        }else{
-                                            selectedTextIDs.remove(it._id)
-                                        }
-                                        tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
-                                        if(selectedTextIDs.size == 0){
-//                                            tvSelectedTextsCounter.text = R.attr.stri
-                                        }
-                                    }
-                                },
-                            )
-                        })
+                        mapTexts(fetchedTexts = fetchedTexts)
                     }
                 }
             })
+    }
+
+    fun mapTexts(fetchedTexts: MutableList<FetchedTextResponse>){
+        recyclerView.adapter = TextsRecyclerViewAdapter(fetchedTexts.map {
+            TextUIModel(
+                it._id,
+                it.user_id,
+                it.text,
+                onClick = {
+                    if (!isRemovingTexts) {
+                        sendText(it.text)
+                    }else if(it.user_id != "ADMIN"){
+                        cvRemoveContacts.visibility = View.VISIBLE
+                        if(!selectedTextIDs.contains(it._id)){
+                            selectedTextIDs.add(it._id)
+                        }else{
+                            selectedTextIDs.remove(it._id)
+                        }
+                        tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
+                        if(selectedTextIDs.size == 0){
+//                                            tvSelectedTextsCounter.text = R.attr.stri
+                        }
+                    }
+                    mapTexts(fetchedTexts)
+                },
+                isSelected = selectedTextIDs.contains(it._id),
+                isAdmin = it.user_id == "ADMIN"
+            )
+        })
     }
 
     fun sendText(text: String) {
@@ -166,6 +178,35 @@ class SendTextActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             })
+    }
+
+    fun removeTexts() {
+        apiClient.getApiService().removeTexts(
+            token = "${sessionManager.fetchAuthToken()}",
+            RemoveRequest(selectedTextIDs as ArrayList<String>)
+        )
+            .enqueue(object : Callback<SubmitRemoveResponse> {
+                override fun onFailure(call: Call<SubmitRemoveResponse>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<SubmitRemoveResponse>,
+                    response: Response<SubmitRemoveResponse>
+                ) {
+                    if (response.code() != 200) {
+                        Toast.makeText(this@SendTextActivity, "Error", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    Toast.makeText(
+                        this@SendTextActivity,
+                        "Texts removed!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        cvRemoveContacts.visibility = View.INVISIBLE
+        isRemovingTexts = false
+        selectedTextIDs.clear()
     }
 
     private fun viewInitializations() {

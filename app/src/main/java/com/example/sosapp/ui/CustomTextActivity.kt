@@ -12,7 +12,7 @@ import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.MessageRequest
 import com.example.sosapp.models.MessageResponse
 import com.example.sosapp.models.SubmitTextRequest
-import com.example.sosapp.models.SubmitTextResponse
+import com.example.sosapp.models.SubmitRemoveResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,14 +56,14 @@ class CustomTextActivity: AppCompatActivity() {
             token = "${sessionManager.fetchAuthToken()}",
             SubmitTextRequest(text)
         )
-            .enqueue(object : Callback<SubmitTextResponse> {
-                override fun onFailure(call: Call<SubmitTextResponse>, t: Throwable) {
+            .enqueue(object : Callback<SubmitRemoveResponse> {
+                override fun onFailure(call: Call<SubmitRemoveResponse>, t: Throwable) {
                     startActivity(intent)
                 }
 
                 override fun onResponse(
-                    call: Call<SubmitTextResponse>,
-                    response: Response<SubmitTextResponse>
+                    call: Call<SubmitRemoveResponse>,
+                    response: Response<SubmitRemoveResponse>
                 ) {
                     if (response.code() != 200) {
                         Toast.makeText(this@CustomTextActivity, "Error", Toast.LENGTH_SHORT).show()

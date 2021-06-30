@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         btRemoveContacts.setOnClickListener{
             apiClient.getApiService().removeContacts(
                 token = "${sessionManager.fetchAuthToken()}",
-                RemoveContactRequest(selectedContactIDs as ArrayList<String>)
+                RemoveRequest(selectedContactIDs as ArrayList<String>)
             )
                 .enqueue(object : Callback<Contact> {
                     override fun onFailure(call: Call<Contact>, t: Throwable) {
