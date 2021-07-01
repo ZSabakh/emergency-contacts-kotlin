@@ -2,7 +2,7 @@ package com.example.sosapp.models
 
 import com.google.gson.annotations.SerializedName
 
-data class TextResponse (
+data class FetchedTextResponse (
     @SerializedName("_id")
     val _id: String,
     @SerializedName("text")

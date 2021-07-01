@@ -15,14 +15,20 @@ interface ApiService {
     @POST(Constants.ADD_CONTACT_URL)
     fun postContact(@Header("x-access-token") token: String, @Body request:Contact): Call <Contact>
 
+    @POST(Constants.ADD_TEXT_URL)
+    fun postText(@Header("x-access-token") token: String, @Body request:SubmitTextRequest): Call <SubmitRemoveResponse>
+
     @POST(Constants.REMOVE_CONTACTS_URL)
-    fun removeContacts(@Header("x-access-token") token: String, @Body request:RemoveContactRequest): Call <Contact>
+    fun removeContacts(@Header("x-access-token") token: String, @Body request:RemoveRequest): Call <Contact>
+
+    @POST(Constants.REMOVE_TEXTS_URL)
+    fun removeTexts(@Header("x-access-token") token: String, @Body request: RemoveRequest): Call <SubmitRemoveResponse>
 
     @GET(Constants.CONTACTS_URL)
     fun fetchPosts(@Header("x-access-token") token: String): Call<ContactsResponse>
 
     @GET(Constants.TEXTS_URL)
-    fun fetchTexts(@Header("x-access-token") token: String): Call <TextsResponse>
+    fun fetchTexts(@Header("x-access-token") token: String): Call <FetchedTextsResponse>
 
     @POST(Constants.SEND_TEXT_URL)
     fun sendText(@Header("x-access-token") token: String, @Body request:MessageRequest): Call <MessageResponse>

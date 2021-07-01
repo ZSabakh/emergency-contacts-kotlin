@@ -14,6 +14,7 @@ import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.*
 import com.example.sosapp.ui.models.ContactUIModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var contactsTest: MutableList<Contact>
-    private lateinit var btAddContact: Button
+    private lateinit var btAddContact: FloatingActionButton
     private lateinit var btSendText: Button
     private lateinit var btRemoveContacts: Button
     val selectedContactNumbers: MutableList<String> = ArrayList()
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         btRemoveContacts.setOnClickListener{
             apiClient.getApiService().removeContacts(
                 token = "${sessionManager.fetchAuthToken()}",
-                RemoveContactRequest(selectedContactIDs as ArrayList<String>)
+                RemoveRequest(selectedContactIDs as ArrayList<String>)
             )
                 .enqueue(object : Callback<Contact> {
                     override fun onFailure(call: Call<Contact>, t: Throwable) {
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.rv_contacts)
         btAddContact = findViewById(R.id.bt_add_contact)
-        btSendText = findViewById(R.id.bt_select_contacts)
+        btSendText = findViewById(R.id.bt_send_custom_text)
         btRemoveContacts = findViewById(R.id.bt_remove_contacts)
     }
 

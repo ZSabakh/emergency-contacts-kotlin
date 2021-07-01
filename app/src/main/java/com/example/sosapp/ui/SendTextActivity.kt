@@ -3,9 +3,12 @@ package com.example.sosapp.ui
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.LocationHelper
@@ -15,6 +18,7 @@ import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.*
 import com.example.sosapp.ui.models.TextUIModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,10 +27,17 @@ import java.io.Serializable
 class SendTextActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
-    private lateinit var btSendText: Button
+    private lateinit var btSendCustomText: Button
     private lateinit var recyclerView: RecyclerView
-    private lateinit var fetchedTexts: MutableList<TextResponse>
+    private lateinit var fetchedTexts: MutableList<FetchedTextResponse>
     private lateinit var selectedContacts: Serializable
+    private lateinit var btSelectRemoveTexts: FloatingActionButton
+    private lateinit var cvRemoveContacts: CardView
+    private lateinit var btRemoveTexts: Button
+    private lateinit var tvSelectedTextsCounter: TextView
+    val selectedTextIDs: MutableList<String> = ArrayList()
+    var isRemovingTexts: Boolean = false
+
     val coordinates: MutableList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,36 +47,61 @@ class SendTextActivity : AppCompatActivity() {
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
         fetchTexts()
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = GridLayoutManager(this, 1)
 
 
-        LocationHelper().startListeningUserLocation(this , object : LocationHelper.MyLocationListener {
-            override fun onLocationChanged(location: Location) {
-                coordinates.add(location.latitude.toString())
-                coordinates.add(location.longitude.toString())
-            }
-        })
+        LocationHelper().startListeningUserLocation(
+            this,
+            object : LocationHelper.MyLocationListener {
+                override fun onLocationChanged(location: Location) {
+                    coordinates.add(location.latitude.toString())
+                    coordinates.add(location.longitude.toString())
+                }
+            })
 
 
         selectedContacts = intent.getSerializableExtra("selected_contacts")!!
 
-        btSendText.setOnClickListener {
-            sendText("test");
+        btSelectRemoveTexts.setOnClickListener {
+            if(!isRemovingTexts){
+                isRemovingTexts = true
+                cvRemoveContacts.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+            if(isRemovingTexts){
+                tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
+                isRemovingTexts = false
+                selectedTextIDs.clear()
+                tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
+                cvRemoveContacts.visibility = View.INVISIBLE
+                fetchTexts()
+            }
+        }
+
+        btRemoveTexts.setOnClickListener {
+            removeTexts()
+            fetchTexts()
+        }
+
+        btSendCustomText.setOnClickListener {
+            val intent = Intent(this@SendTextActivity, CustomTextActivity::class.java)
+            intent.putExtra("selected_contacts", selectedContacts)
+            intent.putExtra("coordinates", coordinates as Serializable)
+            startActivity(intent)
         }
     }
 
-
     private fun fetchTexts() {
         apiClient.getApiService().fetchTexts(token = "${sessionManager.fetchAuthToken()}")
-            .enqueue(object : Callback<TextsResponse> {
-                override fun onFailure(call: Call<TextsResponse>, t: Throwable) {
+            .enqueue(object : Callback<FetchedTextsResponse> {
+                override fun onFailure(call: Call<FetchedTextsResponse>, t: Throwable) {
                     val intent = Intent(this@SendTextActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
 
                 override fun onResponse(
-                    call: Call<TextsResponse>,
-                    response: Response<TextsResponse>
+                    call: Call<FetchedTextsResponse>,
+                    response: Response<FetchedTextsResponse>
                 ) {
                     if (response.code() != 200) {
                         Toast.makeText(
@@ -77,27 +113,43 @@ class SendTextActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     val textsResponse = response.body()
-                    Toast.makeText(this@SendTextActivity, "Texts fetched!", Toast.LENGTH_SHORT)
-                        .show()
                     if (textsResponse != null) {
                         fetchedTexts = textsResponse.texts
-                        recyclerView.adapter = TextsRecyclerViewAdapter(fetchedTexts.map {
-                            println(it)
-                            TextUIModel(
-                                it._id,
-                                it.user_id,
-                                it.text,
-                                onClick = {
-                                    sendText(it.text)
-                                },
-                            )
-                        })
+                        mapTexts(fetchedTexts = fetchedTexts)
                     }
                 }
             })
     }
 
-    private fun sendText(text: String){
+    fun mapTexts(fetchedTexts: MutableList<FetchedTextResponse>){
+        recyclerView.adapter = TextsRecyclerViewAdapter(fetchedTexts.map {
+            TextUIModel(
+                it._id,
+                it.user_id,
+                it.text,
+                onClick = {
+                    if (!isRemovingTexts) {
+                        sendText(it.text)
+                    }else if(it.user_id != "ADMIN"){
+                        cvRemoveContacts.visibility = View.VISIBLE
+                        if(!selectedTextIDs.contains(it._id)){
+                            selectedTextIDs.add(it._id)
+                        }else{
+                            selectedTextIDs.remove(it._id)
+                        }
+                        tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
+                        if(selectedTextIDs.size == 0){
+                        }
+                    }
+                    mapTexts(fetchedTexts)
+                },
+                isSelected = selectedTextIDs.contains(it._id),
+                isAdmin = it.user_id == "ADMIN"
+            )
+        })
+    }
+
+    fun sendText(text: String) {
         val intent = Intent(this@SendTextActivity, MainActivity::class.java)
 
         apiClient.getApiService().sendText(
@@ -127,8 +179,42 @@ class SendTextActivity : AppCompatActivity() {
                 }
             })
     }
+
+    fun removeTexts() {
+        apiClient.getApiService().removeTexts(
+            token = "${sessionManager.fetchAuthToken()}",
+            RemoveRequest(selectedTextIDs as ArrayList<String>)
+        )
+            .enqueue(object : Callback<SubmitRemoveResponse> {
+                override fun onFailure(call: Call<SubmitRemoveResponse>, t: Throwable) {
+                }
+
+                override fun onResponse(
+                    call: Call<SubmitRemoveResponse>,
+                    response: Response<SubmitRemoveResponse>
+                ) {
+                    if (response.code() != 200) {
+                        Toast.makeText(this@SendTextActivity, "Error", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    Toast.makeText(
+                        this@SendTextActivity,
+                        "Texts removed!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        cvRemoveContacts.visibility = View.INVISIBLE
+        isRemovingTexts = false
+        selectedTextIDs.clear()
+    }
+
     private fun viewInitializations() {
         recyclerView = findViewById(R.id.rv_texts)
-        btSendText = findViewById(R.id.bt_select_contacts)
+        btSendCustomText = findViewById(R.id.bt_send_custom_text)
+        btSelectRemoveTexts = findViewById(R.id.bt_select_remove_texts)
+        tvSelectedTextsCounter = findViewById(R.id.tv_selected_texts_counter)
+        cvRemoveContacts = findViewById(R.id.cv_remove_contacts)
+        btRemoveTexts = findViewById(R.id.bt_remove_texts)
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:background="@drawable/ic_main_background"
+    android:background="@drawable/ic_background_green"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,6 +12,7 @@
         android:id="@+id/rv_contacts"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -19,19 +20,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bt_add_contact"
+        android:backgroundTint="@color/green_500"
+        android:src="@drawable/plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/add_contact"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/rv_contacts"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/bt_select_contacts"
+        android:id="@+id/bt_send_custom_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="124dp"
@@ -51,6 +53,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bt_add_contact"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/bt_select_contacts" />
+        app:layout_constraintStart_toEndOf="@+id/bt_send_custom_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

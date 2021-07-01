@@ -31,6 +31,8 @@
         </activity>
         <activity android:name=".ui.RegisterActivity">
         </activity>
+        <activity android:name=".ui.CustomTextActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.ui.models.TextUIModel
 
@@ -20,11 +22,16 @@ class TextsRecyclerViewAdapter(private val textUIModels: List<TextUIModel>)
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        holder.contact.text = textUIModels[position].contactName
-//        holder.number.text = textUIModels[position].phone
         holder.text.text = textUIModels[position].text
         holder.itemView.setOnClickListener{
             textUIModels[position].onClick()
+        }
+        if(textUIModels[position].isSelected){
+            holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_700))
+        }else if(textUIModels[position].isAdmin){
+            holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_400))
+        }else{
+            holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_500))
         }
     }
 
@@ -36,8 +43,8 @@ class TextsRecyclerViewAdapter(private val textUIModels: List<TextUIModel>)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val text: TextView = itemView.findViewById(R.id.tv_text)
-//        val contact: TextView = itemView.findViewById(R.id.tvContact)
-//        val number: TextView = itemView.findViewById(R.id.tvNumber)
+        val cvTextElement: CardView = itemView.findViewById(R.id.cv_text_element)
+
     }
 
 
