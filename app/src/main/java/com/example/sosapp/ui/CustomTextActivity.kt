@@ -43,6 +43,7 @@ class CustomTextActivity: AppCompatActivity() {
                 sendText(etCustomText.text.toString())
             }else{
                 val intent = Intent(this@CustomTextActivity, SendTextActivity::class.java)
+                intent.putExtra("selected_contacts", selectedContacts)
                 startActivity(intent)
             }
         }
@@ -74,7 +75,6 @@ class CustomTextActivity: AppCompatActivity() {
                         "Text submitted!",
                         Toast.LENGTH_SHORT
                     ).show()
-                    startActivity(intent)
                 }
             })
     }

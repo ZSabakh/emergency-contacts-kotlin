@@ -29,7 +29,7 @@ class TextsRecyclerViewAdapter(private val textUIModels: List<TextUIModel>)
         if(textUIModels[position].isSelected){
             holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_700))
         }else if(textUIModels[position].isAdmin){
-            holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_900))
+            holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_400))
         }else{
             holder.cvTextElement.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.green_500))
         }

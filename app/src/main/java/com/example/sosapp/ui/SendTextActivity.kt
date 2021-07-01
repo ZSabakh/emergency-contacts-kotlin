@@ -72,6 +72,7 @@ class SendTextActivity : AppCompatActivity() {
                 tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
                 isRemovingTexts = false
                 selectedTextIDs.clear()
+                tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
                 cvRemoveContacts.visibility = View.INVISIBLE
                 fetchTexts()
             }
@@ -138,7 +139,6 @@ class SendTextActivity : AppCompatActivity() {
                         }
                         tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
                         if(selectedTextIDs.size == 0){
-//                                            tvSelectedTextsCounter.text = R.attr.stri
                         }
                     }
                     mapTexts(fetchedTexts)
