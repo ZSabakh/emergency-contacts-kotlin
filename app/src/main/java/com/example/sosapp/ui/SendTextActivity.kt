@@ -35,6 +35,7 @@ class SendTextActivity : AppCompatActivity() {
     private lateinit var cvRemoveContacts: CardView
     private lateinit var btRemoveTexts: Button
     private lateinit var tvSelectedTextsCounter: TextView
+    private var saveOnly: Boolean = false
     val selectedTextIDs: MutableList<String> = ArrayList()
     var isRemovingTexts: Boolean = false
 
@@ -59,8 +60,12 @@ class SendTextActivity : AppCompatActivity() {
                 }
             })
 
+        saveOnly = intent.getSerializableExtra("save_only") as Boolean
+        if(!saveOnly){
+            selectedContacts = intent.getSerializableExtra("selected_contacts")!!
+        }else{
 
-        selectedContacts = intent.getSerializableExtra("selected_contacts")!!
+        }
 
         btSelectRemoveTexts.setOnClickListener {
             if(!isRemovingTexts){
@@ -85,8 +90,12 @@ class SendTextActivity : AppCompatActivity() {
 
         btSendCustomText.setOnClickListener {
             val intent = Intent(this@SendTextActivity, CustomTextActivity::class.java)
-            intent.putExtra("selected_contacts", selectedContacts)
-            intent.putExtra("coordinates", coordinates as Serializable)
+            if(!saveOnly){
+                intent.putExtra("selected_contacts", selectedContacts)
+                intent.putExtra("coordinates", coordinates as Serializable)
+            }else{
+                intent.putExtra("save_only", saveOnly)
+            }
             startActivity(intent)
         }
     }
@@ -140,6 +149,9 @@ class SendTextActivity : AppCompatActivity() {
                         tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
                         if(selectedTextIDs.size == 0){
                         }
+                    }
+                    else if(it.user_id == "ADMIN"){
+                        Toast.makeText(this@SendTextActivity, "Can't remove sample texts", Toast.LENGTH_SHORT).show()
                     }
                     mapTexts(fetchedTexts)
                 },

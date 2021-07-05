@@ -1,6 +1,9 @@
 package com.example.sosapp.ui
+
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -18,7 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.Serializable
 
-class CustomTextActivity: AppCompatActivity() {
+class CustomTextActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
     private lateinit var sessionManager: SessionManager
     private lateinit var etCustomText: EditText
@@ -26,7 +29,7 @@ class CustomTextActivity: AppCompatActivity() {
     private lateinit var btCompleteCustomText: Button
     private lateinit var selectedContacts: Serializable
     private lateinit var coordinates: MutableList<String>
-
+    private var saveOnly: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,23 +37,32 @@ class CustomTextActivity: AppCompatActivity() {
         viewInitializations()
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
-        selectedContacts = intent.getSerializableExtra("selected_contacts")!!
-        coordinates = intent.getSerializableExtra("coordinates") as MutableList<String>
+
+        saveOnly = intent.getSerializableExtra("save_only") as Boolean
+        if (!saveOnly) {
+            selectedContacts = intent.getSerializableExtra("selected_contacts")!!
+            coordinates = intent.getSerializableExtra("coordinates") as MutableList<String>
+        } else {
+            cbSendText.isChecked = false
+            cbSendText.visibility = View.INVISIBLE
+        }
 
         btCompleteCustomText.setOnClickListener {
             postText(etCustomText.text.toString())
-            if(cbSendText.isChecked){
+            if (cbSendText.isChecked) {
                 sendText(etCustomText.text.toString())
-            }else{
+            } else {
                 val intent = Intent(this@CustomTextActivity, SendTextActivity::class.java)
-                intent.putExtra("selected_contacts", selectedContacts)
+                if(!saveOnly){
+                    intent.putExtra("selected_contacts", selectedContacts)
+                }
                 startActivity(intent)
             }
         }
     }
 
 
-    private fun postText(text: String){
+    private fun postText(text: String) {
         val intent = Intent(this@CustomTextActivity, MainActivity::class.java)
 
         apiClient.getApiService().postText(
@@ -79,7 +91,7 @@ class CustomTextActivity: AppCompatActivity() {
             })
     }
 
-    private fun sendText(text: String){
+    private fun sendText(text: String) {
         val intent = Intent(this@CustomTextActivity, MainActivity::class.java)
 
         apiClient.getApiService().sendText(
