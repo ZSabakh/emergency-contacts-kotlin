@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var contactsTest: MutableList<Contact>
     private lateinit var btAddContact: FloatingActionButton
+    private lateinit var btGotoTexts: FloatingActionButton
     private lateinit var btSendText: Button
     private lateinit var btRemoveContacts: Button
     val selectedContactNumbers: MutableList<String> = ArrayList()
@@ -83,6 +84,11 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("selected_contacts", selectedContactNumbers as Serializable)
             startActivity(intent)
         }
+        btGotoTexts.setOnClickListener {
+            val intent = Intent(this@MainActivity, SendTextActivity::class.java)
+            intent.putExtra("save_only", true)
+            startActivity(intent)
+        }
 
     }
 
@@ -92,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         btAddContact = findViewById(R.id.bt_add_contact)
         btSendText = findViewById(R.id.bt_send_custom_text)
         btRemoveContacts = findViewById(R.id.bt_remove_contacts)
+        btGotoTexts = findViewById(R.id.bt_goto_texts)
     }
 
     private fun fetchContacts() {
