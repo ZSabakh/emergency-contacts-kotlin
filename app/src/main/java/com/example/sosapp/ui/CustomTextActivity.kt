@@ -37,11 +37,13 @@ class CustomTextActivity : AppCompatActivity() {
         viewInitializations()
         apiClient = ApiClient()
         sessionManager = SessionManager(this)
-
-        saveOnly = intent.getSerializableExtra("save_only") as Boolean
+        if (intent.hasExtra("save_only")){
+            saveOnly = intent.getSerializableExtra("save_only") as Boolean
+        }
         if (!saveOnly) {
             selectedContacts = intent.getSerializableExtra("selected_contacts")!!
             coordinates = intent.getSerializableExtra("coordinates") as MutableList<String>
+            println(coordinates)
         } else {
             cbSendText.isChecked = false
             cbSendText.visibility = View.INVISIBLE
@@ -54,6 +56,7 @@ class CustomTextActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(this@CustomTextActivity, SendTextActivity::class.java)
                 if(!saveOnly){
+                    intent.putExtra("coordinates", coordinates as Serializable)
                     intent.putExtra("selected_contacts", selectedContacts)
                 }
                 startActivity(intent)

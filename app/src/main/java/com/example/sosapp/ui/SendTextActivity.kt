@@ -36,8 +36,8 @@ class SendTextActivity : AppCompatActivity() {
     private lateinit var btRemoveTexts: Button
     private lateinit var tvSelectedTextsCounter: TextView
     private var saveOnly: Boolean = false
-    val selectedTextIDs: MutableList<String> = ArrayList()
-    var isRemovingTexts: Boolean = false
+    private val selectedTextIDs: MutableList<String> = ArrayList()
+    private var isRemovingTexts: Boolean = false
 
     val coordinates: MutableList<String> = ArrayList()
 
@@ -60,20 +60,22 @@ class SendTextActivity : AppCompatActivity() {
                 }
             })
 
-        saveOnly = intent.getSerializableExtra("save_only") as Boolean
-        if(!saveOnly){
+        if (intent.hasExtra("save_only")) {
+            saveOnly = intent.getSerializableExtra("save_only") as Boolean
+        }
+        if (!saveOnly) {
             selectedContacts = intent.getSerializableExtra("selected_contacts")!!
-        }else{
+        } else {
 
         }
 
         btSelectRemoveTexts.setOnClickListener {
-            if(!isRemovingTexts){
+            if (!isRemovingTexts) {
                 isRemovingTexts = true
                 cvRemoveContacts.visibility = View.VISIBLE
                 return@setOnClickListener
             }
-            if(isRemovingTexts){
+            if (isRemovingTexts) {
                 tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
                 isRemovingTexts = false
                 selectedTextIDs.clear()
@@ -90,10 +92,10 @@ class SendTextActivity : AppCompatActivity() {
 
         btSendCustomText.setOnClickListener {
             val intent = Intent(this@SendTextActivity, CustomTextActivity::class.java)
-            if(!saveOnly){
+            if (!saveOnly) {
                 intent.putExtra("selected_contacts", selectedContacts)
                 intent.putExtra("coordinates", coordinates as Serializable)
-            }else{
+            } else {
                 intent.putExtra("save_only", saveOnly)
             }
             startActivity(intent)
@@ -130,7 +132,7 @@ class SendTextActivity : AppCompatActivity() {
             })
     }
 
-    fun mapTexts(fetchedTexts: MutableList<FetchedTextResponse>){
+    fun mapTexts(fetchedTexts: MutableList<FetchedTextResponse>) {
         recyclerView.adapter = TextsRecyclerViewAdapter(fetchedTexts.map {
             TextUIModel(
                 it._id,
@@ -139,19 +141,22 @@ class SendTextActivity : AppCompatActivity() {
                 onClick = {
                     if (!isRemovingTexts) {
                         sendText(it.text)
-                    }else if(it.user_id != "ADMIN"){
+                    } else if (it.user_id != "ADMIN") {
                         cvRemoveContacts.visibility = View.VISIBLE
-                        if(!selectedTextIDs.contains(it._id)){
+                        if (!selectedTextIDs.contains(it._id)) {
                             selectedTextIDs.add(it._id)
-                        }else{
+                        } else {
                             selectedTextIDs.remove(it._id)
                         }
                         tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
-                        if(selectedTextIDs.size == 0){
+                        if (selectedTextIDs.size == 0) {
                         }
-                    }
-                    else if(it.user_id == "ADMIN"){
-                        Toast.makeText(this@SendTextActivity, "Can't remove sample texts", Toast.LENGTH_SHORT).show()
+                    } else if (it.user_id == "ADMIN") {
+                        Toast.makeText(
+                            this@SendTextActivity,
+                            "Can't remove sample texts",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     mapTexts(fetchedTexts)
                 },
