@@ -13,4 +13,5 @@
     <string name="text">Text</string>
     <string name="complete">Complete</string>
     <string name="send_text_as_well">Send text as well</string>
+    <string name="add_contacts">Add contacts</string>
 </resources>
