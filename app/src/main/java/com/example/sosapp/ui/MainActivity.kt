@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
         btRemoveContacts.setOnClickListener{
+            val intent = Intent(this@MainActivity, MainActivity::class.java)
             apiClient.getApiService().removeContacts(
                 token = "${sessionManager.fetchAuthToken()}",
                 RemoveRequest(selectedContactIDs as ArrayList<String>)

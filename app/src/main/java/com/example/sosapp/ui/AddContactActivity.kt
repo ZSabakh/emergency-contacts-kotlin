@@ -14,6 +14,7 @@ import com.example.sosapp.R
 import com.example.sosapp.api.ApiClient
 import com.example.sosapp.api.SessionManager
 import com.example.sosapp.models.Contact
+import com.example.sosapp.models.ContactsRequest
 import com.example.sosapp.utility.ContactData
 import com.example.sosapp.utility.retrieveAllContacts
 import retrofit2.Call
@@ -41,7 +42,7 @@ class AddContactActivity : AppCompatActivity() {
             val intent = Intent(this@AddContactActivity, MainActivity::class.java)
             apiClient.getApiService().postContact(
                 token = "${sessionManager.fetchAuthToken()}",
-                Contact(etNewContactName.text.toString(), etNewContactPhone.text.toString(), "")
+                ContactsRequest(arrayListOf(Contact(etNewContactName.text.toString(), etNewContactPhone.text.toString(), "")))
             )
                 .enqueue(object : Callback<Contact> {
                     override fun onFailure(call: Call<Contact>, t: Throwable) {

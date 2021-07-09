@@ -8,11 +8,19 @@
 
     <EditText
         android:id="@+id/et_search_existing_contacts"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="#BAFFFFFF"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:drawablePadding="-40dp"
+        android:elevation="10dp"
+        android:gravity="center"
         android:hint="Search"
+        android:padding="5dp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </EditText>
 
@@ -20,6 +28,7 @@
         android:id="@+id/rv_existing_contacts"
         android:layout_width="403dp"
         android:layout_height="693dp"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +41,7 @@
         android:animateLayoutChanges="true"
         android:visibility="invisible"
         app:cardBackgroundColor="@color/green_700"
+        app:cardElevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rv_existing_contacts">
 
@@ -39,30 +49,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/bt_add_existing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_contacts"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_selected_contacts_counter" />
-
             <TextView
                 android:id="@+id/tv_selected_contacts_counter"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="110dp"
                 android:background="@color/green_700"
                 android:gravity="center"
                 android:text="Select contacts"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bt_add_existing"
                 app:layout_constraintStart_toStartOf="parent">
 
             </TextView>
+
+            <Button
+                android:id="@+id/bt_add_existing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/add_contacts"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
