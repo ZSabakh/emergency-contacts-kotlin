@@ -1,7 +1,11 @@
 package com.example.sosapp.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +17,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.ContactsRecyclerViewAdapter
@@ -49,7 +55,8 @@ class ExistingContactsActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         rvExistingContacts.layoutManager = GridLayoutManager(this, 1)
-        renderContacts(null)
+
+        checkPermission()
 
         etSearchExistingContacts.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -85,7 +92,11 @@ class ExistingContactsActivity : AppCompatActivity() {
                         response: Response<Contact>
                     ) {
                         if (response.code() != 200) {
-                            Toast.makeText(this@ExistingContactsActivity, "Error", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this@ExistingContactsActivity,
+                                "Error",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                             startActivity(intent)
                         }
@@ -101,12 +112,14 @@ class ExistingContactsActivity : AppCompatActivity() {
 
     }
 
+
     private fun renderContacts(contactName: String?) {
         @SuppressLint("MissingPermission")
-        var contacts: List<ContactData> =  retrieveAllContacts()
+        var contacts: List<ContactData> = retrieveAllContacts()
         contacts = contacts.filter { contact -> contact.phoneNumber.any() }
-        if(!contactName.isNullOrBlank()){
-            contacts = contacts.filter {contact -> contact.name.contains(contactName, ignoreCase = true)}
+        if (!contactName.isNullOrBlank()) {
+            contacts =
+                contacts.filter { contact -> contact.name.contains(contactName, ignoreCase = true) }
         }
 
         //Filter search with the above line too.
@@ -132,6 +145,55 @@ class ExistingContactsActivity : AppCompatActivity() {
             )
         })
     }
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this@ExistingContactsActivity,
+                Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(
+                this@ExistingContactsActivity,
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                1
+            )
+        } else {
+            renderContacts(null)
+            Toast.makeText(
+                this@ExistingContactsActivity,
+                "Permission already granted",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(
+                    this@ExistingContactsActivity,
+                    "Contact Permission Granted",
+                    Toast.LENGTH_SHORT
+                ).show()
+                renderContacts(null)
+
+            } else {
+                Toast.makeText(
+                    this@ExistingContactsActivity,
+                    "Contact Permission Denied",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
 
     fun viewInitializations() {
         rvExistingContacts = findViewById(R.id.rv_existing_contacts)
