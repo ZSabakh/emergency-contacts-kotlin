@@ -7,11 +7,15 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="6dp"
     android:layout_marginVertical="7dp"
+    android:fadingEdge="vertical"
     app:cardBackgroundColor="@color/green_500"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
     app:cardMaxElevation="7dp"
     app:contentPadding="24dp"
+    android:stateListAnimator="@anim/animation"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout

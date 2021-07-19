@@ -161,11 +161,6 @@ class ExistingContactsActivity : AppCompatActivity() {
             )
         } else {
             renderContacts(null)
-            Toast.makeText(
-                this@ExistingContactsActivity,
-                "Permission already granted",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 
@@ -195,7 +190,7 @@ class ExistingContactsActivity : AppCompatActivity() {
     }
 
 
-    fun viewInitializations() {
+    private fun viewInitializations() {
         rvExistingContacts = findViewById(R.id.rv_existing_contacts)
         cvAddExisting = findViewById(R.id.cv_add_existing)
         btAddExisting = findViewById(R.id.bt_add_existing)
