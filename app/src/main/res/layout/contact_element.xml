@@ -16,7 +16,7 @@
     android:stateListAnimator="@anim/animation"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
-    >
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

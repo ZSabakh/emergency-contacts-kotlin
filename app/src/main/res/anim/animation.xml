@@ -13,7 +13,7 @@
                 <objectAnimator
                     android:duration="@android:integer/config_shortAnimTime"
                     android:propertyName="translationY"
-                    android:valueTo="-40dp"
+                    android:valueTo="-30dp"
                     android:valueType="floatType"/>
             </set>
         </item>
