@@ -12,45 +12,18 @@
         android:id="@+id/cv_contact_element"
         android:layout_width="370dp"
         android:layout_height="440dp"
-        android:layout_marginTop="115dp"
+        android:layout_marginBottom="190dp"
         app:cardBackgroundColor="#BEFDFDFD"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <!--            <EditText-->
-            <!--                android:id="@+id/et_login_username"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="136dp"-->
-            <!--                android:ems="13"-->
-            <!--                android:gravity="center"-->
-            <!--                android:hint="@string/username"-->
-            <!--                android:inputType="textPersonName"-->
-            <!--                android:textColor="@color/black"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--            <EditText-->
-            <!--                android:id="@+id/et_login_password"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="24dp"-->
-            <!--                android:ems="13"-->
-            <!--                android:gravity="center"-->
-            <!--                android:hint="@string/password"-->
-            <!--                android:inputType="textPassword"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/et_login_username" />-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout2"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

@@ -13,7 +13,7 @@
     app:cardElevation="5dp"
     app:cardMaxElevation="7dp"
     app:contentPadding="24dp"
-    android:stateListAnimator="@anim/animation"
+    android:stateListAnimator="@anim/contact_animation"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
