@@ -13,7 +13,7 @@ interface ApiService {
     fun register(@Body request: SignUpRequest): Call<SignUpResponse>
 
     @POST(Constants.ADD_CONTACT_URL)
-    fun postContact(@Header("x-access-token") token: String, @Body request:Contact): Call <Contact>
+    fun postContact(@Header("x-access-token") token: String, @Body request:ContactsRequest): Call <Contact>
 
     @POST(Constants.ADD_TEXT_URL)
     fun postText(@Header("x-access-token") token: String, @Body request:SubmitTextRequest): Call <SubmitRemoveResponse>

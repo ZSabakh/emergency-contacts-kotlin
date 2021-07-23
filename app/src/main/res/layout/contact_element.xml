@@ -7,38 +7,43 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="6dp"
     android:layout_marginVertical="7dp"
+    android:fadingEdge="vertical"
     app:cardBackgroundColor="@color/green_500"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
     app:cardMaxElevation="7dp"
     app:contentPadding="24dp"
-    >
+    android:stateListAnimator="@anim/contact_animation"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/tv_contact"
-            app:layout_constraintTop_toBottomOf="@+id/tv_contact"
-            tools:text="Number" />
-
-        <TextView
             android:id="@+id/tv_contact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
-            android:textColor="#E9FFDB"
+            android:textColor="#EEEFED"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Contact" />
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_contact"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact"
+            tools:text="Number" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,11 +1,14 @@
 package com.example.sosapp.ui
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sosapp.R
@@ -29,10 +32,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btGotoTexts: FloatingActionButton
     private lateinit var btSendText: Button
     private lateinit var btRemoveContacts: Button
+    private lateinit var pbContacts: ContentLoadingProgressBar
     val selectedContactNumbers: MutableList<String> = ArrayList()
     val selectedContactIDs: MutableList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewInitializations()
@@ -43,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
         btRemoveContacts.setOnClickListener{
+            val intent = Intent(this@MainActivity, MainActivity::class.java)
             apiClient.getApiService().removeContacts(
                 token = "${sessionManager.fetchAuthToken()}",
                 RemoveRequest(selectedContactIDs as ArrayList<String>)
@@ -99,9 +105,11 @@ class MainActivity : AppCompatActivity() {
         btSendText = findViewById(R.id.bt_send_custom_text)
         btRemoveContacts = findViewById(R.id.bt_remove_contacts)
         btGotoTexts = findViewById(R.id.bt_goto_texts)
+        pbContacts = findViewById(R.id.pb_contacts)
     }
 
     private fun fetchContacts() {
+        pbContacts.show()
         apiClient.getApiService().fetchPosts(token = "${sessionManager.fetchAuthToken()}")
             .enqueue(object : Callback<ContactsResponse> {
                 override fun onFailure(call: Call<ContactsResponse>, t: Throwable) {
@@ -123,8 +131,9 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     val loginResponse = response.body()
-                    Toast.makeText(this@MainActivity, "Contacts fetched!", Toast.LENGTH_SHORT)
-                        .show()
+                    pbContacts.hide()
+                    btGotoTexts.visibility = View.VISIBLE
+                    btAddContact.visibility = View.VISIBLE
                     if (loginResponse != null) {
                         contactsTest = loginResponse.contacts
                         recyclerView.adapter = ContactsRecyclerViewAdapter(contactsTest.map {

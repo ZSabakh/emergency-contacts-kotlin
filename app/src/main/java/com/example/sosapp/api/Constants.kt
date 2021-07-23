@@ -1,7 +1,7 @@
 package com.example.sosapp.api
 
 object Constants {
-    const val BASE_URL = "http://10.0.2.2:8000/"
+    const val BASE_URL = "http://167.99.7.161:5000/"
     const val LOGIN_URL = "auth/signin"
     const val REGISTER_URL = "auth/signup"
     const val CONTACTS_URL = "user/get-contacts"

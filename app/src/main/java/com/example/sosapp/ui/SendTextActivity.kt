@@ -4,6 +4,7 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -49,7 +50,6 @@ class SendTextActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         fetchTexts()
         recyclerView.layoutManager = GridLayoutManager(this, 1)
-
 
         LocationHelper().startListeningUserLocation(
             this,
