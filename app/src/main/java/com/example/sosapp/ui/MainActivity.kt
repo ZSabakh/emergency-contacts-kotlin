@@ -131,8 +131,6 @@ class MainActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     val loginResponse = response.body()
-                    Toast.makeText(this@MainActivity, "Contacts fetched!", Toast.LENGTH_SHORT)
-                        .show()
                     pbContacts.hide()
                     btGotoTexts.visibility = View.VISIBLE
                     btAddContact.visibility = View.VISIBLE

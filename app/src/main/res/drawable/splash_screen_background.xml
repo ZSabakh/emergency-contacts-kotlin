@@ -3,7 +3,7 @@
     android:opacity="opaque">
     <item android:drawable="@color/green_500" />
     <item
-        android:height="170dp"
+        android:height="160dp"
         android:width="380dp"
         android:gravity="center">
         <bitmap
