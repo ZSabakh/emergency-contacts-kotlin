@@ -139,26 +139,28 @@ class SendTextActivity : AppCompatActivity() {
                 it.user_id,
                 it.text,
                 onClick = {
-                    if (!isRemovingTexts) {
-                        sendText(it.text)
-                    } else if (it.user_id != "ADMIN") {
-                        cvRemoveContacts.visibility = View.VISIBLE
-                        if (!selectedTextIDs.contains(it._id)) {
-                            selectedTextIDs.add(it._id)
-                        } else {
-                            selectedTextIDs.remove(it._id)
+                    if(!saveOnly){
+                        if (!isRemovingTexts) {
+                            sendText(it.text)
+                        } else if (it.user_id != "ADMIN") {
+                            cvRemoveContacts.visibility = View.VISIBLE
+                            if (!selectedTextIDs.contains(it._id)) {
+                                selectedTextIDs.add(it._id)
+                            } else {
+                                selectedTextIDs.remove(it._id)
+                            }
+                            tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
+                            if (selectedTextIDs.size == 0) {
+                            }
+                        } else if (it.user_id == "ADMIN") {
+                            Toast.makeText(
+                                this@SendTextActivity,
+                                "Can't remove sample texts",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        tvSelectedTextsCounter.text = "${selectedTextIDs.size}"
-                        if (selectedTextIDs.size == 0) {
-                        }
-                    } else if (it.user_id == "ADMIN") {
-                        Toast.makeText(
-                            this@SendTextActivity,
-                            "Can't remove sample texts",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        mapTexts(fetchedTexts)
                     }
-                    mapTexts(fetchedTexts)
                 },
                 isSelected = selectedTextIDs.contains(it._id),
                 isAdmin = it.user_id == "ADMIN"
